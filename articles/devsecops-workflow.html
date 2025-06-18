@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevSecOps Workflow - Cyber Info</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #334155; /* Slate 700 for main text */
+            background-color: #f8fafc; /* Slate 50 for background */
+        }
+        .header-nav-link {
+            transition: all 0.2s ease-in-out;
+        }
+        .header-nav-link:hover {
+            color: #0ea5e9; /* Sky 500 */
+        }
+        .header-nav-link.active {
+            font-weight: 600; /* Semi-bold */
+            color: #0284c7; /* Sky 700 */
+            border-bottom: 2px solid #0284c7;
+        }
+        .section-title {
+            color: #1e293b; /* Slate 800 */
+            margin-bottom: 1.5rem;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+            border: 1px solid #e2e8f0; /* border-slate-200 */
+            padding: 1.5rem;
+            transition: transform 0.2s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        /* Specific styles for DevSecOps article components */
+        .content-section {
+            display: block; /* Always show content on individual article page */
+        }
+        .code-block {
+            position: relative;
+        }
+        .copy-button {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background-color: #4b5563;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .copy-button:hover {
+            background-color: #6b7280;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        .tooltip-container {
+            position: relative;
+            display: inline-block;
+        }
+        .tooltip-trigger {
+            cursor: pointer;
+            color: #0284c7;
+            font-weight: 600;
+            border-bottom: 1px dashed #0284c7;
+        }
+        .tooltip-content {
+            visibility: hidden;
+            width: 280px;
+            background-color: #1f2937;
+            color: #fff;
+            text-align: left;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 10;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -140px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.875rem;
+            line-height: 1.4;
+        }
+        .tooltip-content::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #1f2937 transparent transparent transparent;
+        }
+        .tooltip-container:hover .tooltip-content {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <header class="bg-white shadow-sm py-4">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <a href="../index.html" class="text-2xl font-bold text-slate-900 hover:text-sky-700 transition duration-200">Cyber Info</a>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="../index.html" class="header-nav-link text-lg text-slate-700 pb-1">Home</a></li>
+                    <li><a href="../articles.html" class="header-nav-link text-lg text-slate-700 pb-1">Articles</a></li>
+                    <li><a href="../projects.html" class="header-nav-link text-lg text-slate-700 pb-1">Projects</a></li>
+                    <li><a href="../about.html" class="header-nav-link text-lg text-slate-700 pb-1">About</a></li>
+                    <li><a href="../contact.html" class="header-nav-link text-lg text-slate-700 pb-1">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-8 max-w-4xl bg-white rounded-xl shadow-md my-8 border border-slate-200">
+        <h1 class="text-4xl font-bold text-slate-900 mb-4">Elevating CI/CD with Integrated DevSecOps</h1>
+        <p class="text-lg text-slate-600 mb-6">This article explores a comprehensive DevSecOps automation workflow built with GitHub Actions. It demonstrates how to seamlessly integrate industry-leading security tools like Snyk, Sigstore Cosign, and OWASP ZAP into a CI/CD pipeline. The primary goal is to "shift security left," embedding security into every phase of the development lifecycle to build more resilient and trustworthy software.</p>
+        
+        <div class="bg-slate-50 p-6 rounded-xl shadow-inner border border-slate-200 mb-6">
+            <h3 class="text-xl font-bold text-slate-800 mb-4">Workflow at a Glance</h3>
+            <p class="text-slate-600 mb-6">The pipeline is triggered on a push to the `develop` branch and executes a series of automated security checks. The diagram below outlines the key stages of this automated workflow.</p>
+            <div class="text-center p-4 bg-slate-100 rounded-lg overflow-x-auto">
+                <div class="flex items-center justify-center space-x-2 md:space-x-4 text-xs md:text-sm font-medium text-slate-700">
+                    <div class="p-3 bg-white rounded-lg shadow-sm">Code Commit</div>
+                    <span class="font-bold text-sky-500">→</span>
+                    <div class="p-3 bg-sky-100 rounded-lg shadow-sm">Phase 1: Pre-Build Scans (SAST/SCA)</div>
+                    <span class="font-bold text-sky-500">→</span>
+                    <div class="p-3 bg-white rounded-lg shadow-sm">Build Image</div>
+                    <span class="font-bold text-sky-500">→</span>
+                    <div class="p-3 bg-sky-100 rounded-lg shadow-sm">Phase 2: Harden Image (Scan & Sign)</div>
+                    <span class="font-bold text-sky-500">→</span>
+                    <div class="p-3 bg-white rounded-lg shadow-sm">Deploy</div>
+                    <span class="font-bold text-sky-500">→</span>
+                    <div class="p-3 bg-sky-100 rounded-lg shadow-sm">Phase 3: Post-Deploy Scan (DAST)</div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="text-3xl font-bold text-slate-900 mb-4 mt-8">Phase 1: Secure Code & Dependencies (Pre-Build)</h2>
+        <p class="text-lg text-slate-600 mb-6">This initial phase focuses on analyzing the source code and its dependencies for vulnerabilities *before* any artifacts are built. This is the core of the "shift-left" philosophy, catching issues early to minimize risk and remediation cost.</p>
+        
+        <div class="card mb-6">
+            <h3 class="text-xl font-bold text-slate-800 mb-2">Setting the Stage</h3>
+            <p class="text-slate-600 mb-4">The workflow begins by checking out the code and setting up Docker Buildx for an efficient and modern build environment. An image tag is dynamically generated from the commit hash.</p>
+            <div class="code-block bg-slate-800 text-white rounded-lg p-4 font-mono text-sm">
+                <button class="copy-button">Copy</button>
+                <pre><code>- name: Checkout code
+  uses: actions/checkout@v3
+
+- name: Set up Docker Buildx
+  uses: docker/setup-buildx-action@v2
+
+- name: Set up image tag
+  run: |
+    SHORT_SHA=$(echo "${GITHUB_SHA}" | cut -c1-7)
+    echo "IMAGE_TAG=develop-${SHORT_SHA}" >> $GITHUB_ENV</code></pre>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 class="text-xl font-bold text-slate-800 mb-2">Proactive Security with Snyk</h3>
+            <p class="text-slate-600 mb-4">Next, we use Snyk to perform two critical scans. This layered approach covers both our own code and the open-source libraries we depend on.</p>
+            <ul class="list-disc list-inside space-y-2 text-slate-600 mb-4">
+                <li><strong>
+                    <div class="tooltip-container">
+                        <span class="tooltip-trigger">SAST (Static Application Security Testing)</span>
+                        <div class="tooltip-content">Scans your proprietary source code for security flaws like SQL injection, buffer overflows, and insecure configurations without executing it.</div>
+                    </div>
+                :</strong> The `snyk code test` command analyzes your custom-written application code for security vulnerabilities.</li>
+                <li><strong>
+                     <div class="tooltip-container">
+                        <span class="tooltip-trigger">SCA (Software Composition Analysis)</span>
+                        <div class="tooltip-content">Identifies all open-source components and dependencies in your project, checking for known vulnerabilities and license compliance issues.</div>
+                    </div>
+                :</strong> The `snyk test` command finds vulnerabilities in your open-source dependencies, including transitive ones.</li>
+            </ul>
+             <div class="code-block bg-slate-800 text-white rounded-lg p-4 font-mono text-sm">
+                <button class="copy-button">Copy</button>
+                <pre><code># Snyk SAST & SCA starts here
+- name: Run Snyk SCA Scan
+  id: snyk_test
+  run: |
+    snyk test --all-projects --severity-threshold=high
+  continue-on-error: true
+
+- name: Run Snyk SAST Scan
+  id: snyk_code_test
+  run: |
+    snyk code test --all-projects --severity-threshold=high
+  continue-on-error: true</code></pre>
+            </div>
+        </div>
+
+        <h2 class="text-3xl font-bold text-slate-900 mb-4 mt-8">Phase 2: Hardening Container Images & Supply Chain</h2>
+        <p class="text-lg text-slate-600 mb-6">After the initial code scans, the workflow builds the Docker image. This phase hardens that image by scanning it for vulnerabilities and cryptographically signing it to ensure its integrity and origin.</p>
+
+        <div class="card mb-6">
+            <h3 class="text-xl font-bold text-slate-800 mb-2">Build and Scan Docker Image</h3>
+            <p class="text-slate-600 mb-4">The Docker image is built, and then `Snyk Container` is used to find vulnerabilities within the container's OS packages and application dependencies. This scan is crucial as base images can often contain outdated and vulnerable components.</p>
+            <div class="code-block bg-slate-800 text-white rounded-lg p-4 font-mono text-sm">
+                <button class="copy-button">Copy</button>
+                <pre><code>- name: Build Docker image
+  run: docker build -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG .
+
+- name: Snyk Container image Scan
+  id: snyk_container_scan
+  run: |
+    snyk container test $REGISTRY/$IMAGE_NAME:$IMAGE_TAG --severity-threshold=high
+  continue-on-error: true</code></pre>
+            </div>
+        </div>
+        
+        <div class="card mb-6">
+            <h3 class="text-xl font-bold text-slate-800 mb-2">Enforcing Security: The Quality Gate</h3>
+            <p class="text-slate-600 mb-4">This step acts as a critical security gate. If any of the previous Snyk scans (`SAST`, `SCA`, or `Container`) detected high-severity vulnerabilities, the build is intentionally failed. This automated enforcement prevents insecure artifacts from ever reaching a registry or deployment environment.</p>
+             <div class="code-block bg-slate-800 text-white rounded-lg p-4 font-mono text-sm">
+                <button class="copy-button">Copy</button>
+                <pre><code>- name: Fail Build on Snyk Vulnerabilities
+  if: ${{ steps.snyk_test.outcome == 'failure' || steps.snyk_code_test.outcome == 'failure' || steps.snyk_container_scan.outcome == 'failure' }}
+  run: |
+    echo "Snyk found high-severity vulnerabilities!"
+    exit 1</code></pre>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h3 class="text-xl font-bold text-slate-800 mb-2">Ensuring Trust with Sigstore Cosign</h3>
+            <p class="text-slate-600 mb-4">To combat software supply chain attacks, we use
+             <div class="tooltip-container">
+                <span class="tooltip-trigger">Sigstore Cosign</span>
+                <div class="tooltip-content">An open-source tool for signing and verifying software artifacts. It provides cryptographic proof of an artifact's origin (provenance) and ensures it hasn't been tampered with.</div>
+            </div>
+             to sign our container image. The image is pushed, its immutable digest is captured, and that digest is signed. This guarantees the image's authenticity and integrity.</p>
+             <div class="code-block bg-slate-800 text-white rounded-lg p-4 font-mono text-sm">
+                <button class="copy-button">Copy</button>
+                <pre><code># Software provenance starts here
+- name: Push Docker image and get digest
+  run: |
+    docker push $REGISTRY/$IMAGE_NAME:$IMAGE_TAG
+    DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' $REGISTRY/$IMAGE_NAME:$IMAGE_TAG | cut -d'@' -f2)
+    echo "DIGEST=${DIGEST}" >> $GITHUB_ENV
+
+- name: Sign with Cosign (Digest-Based)
+  run: |
+    cosign sign --yes --key env://COSIGN_PRIVATE_KEY $REGISTRY/$IMAGE_NAME@$DIGEST
+
+- name: Verify Signature
+  run: |
+    cosign verify --key env://COSIGN_PUBLIC_KEY $REGISTRY/$IMAGE_NAME@$DIGEST</code></pre>
+            </div>
+        </div>
+
+        <h2 class="text-3xl font-bold text-slate-900 mb-4 mt-8">Phase 3: Dynamic Security Testing (Post-Deployment)</h2>
+        <p class="text-lg text-slate-600 mb-6">Static analysis is not enough. This final phase tests the *running* application to find vulnerabilities that only appear at runtime, providing a crucial layer of defense.</p>
+        
+        <div class="card mb-6">
+            <h3 class="text-xl font-bold text-slate-800 mb-2">Runtime Vulnerability Detection with OWASP ZAP</h3>
+            <p class="text-slate-600 mb-4">We use OWASP ZAP, a leading
+             <div class="tooltip-container">
+                <span class="tooltip-trigger">DAST (Dynamic Application Security Testing)</span>
+                <div class="tooltip-content">Tests a running application from the outside-in by simulating attacks. It's essential for finding runtime issues like misconfigurations, authentication flaws, and injection vulnerabilities.</div>
+            </div>
+            tool, to actively probe the deployed application. ZAP sends simulated malicious requests to identify vulnerabilities like Cross-Site Scripting (XSS) or insecure server configurations that static scans cannot detect.</p>
+             <div class="code-block bg-slate-800 text-white rounded-lg p-4 font-mono text-sm">
+                <button class="copy-button">Copy</button>
+                <pre><code>- name: OWASP ZAP Full Scan
+  uses: zaproxy/action-full-scan@v0.6.0
+  with:
+    target: 'https://your-deployed-app-url.com'
+    fail_action: false # Don't fail workflow on findings in dev
+</code></pre>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 class="text-xl font-bold text-slate-800 mb-2">Centralizing Reports for Analysis</h3>
+            <p class="text-slate-600 mb-4">Finally, the security reports generated by ZAP are uploaded as build artifacts. This ensures the findings are persisted and accessible for review, tracking, and auditing, completing the feedback loop.</p>
+            <div class="code-block bg-slate-800 text-white rounded-lg p-4 font-mono text-sm">
+                <button class="copy-button">Copy</button>
+                <pre><code>- name: Upload ZAP Reports
+  if: always()
+  uses: actions/upload-artifact@v4
+  with:
+    name: zap-security-reports
+    path: report.html
+</code></pre>
+            </div>
+        </div>
+
+        <h2 class="text-3xl font-bold text-slate-900 mb-4 mt-8">Summary & Strategic Benefits</h2>
+        <p class="text-lg text-slate-600 mb-6">This integrated DevSecOps workflow provides a powerful, multi-layered defense strategy. By automating security at every stage, it enables teams to build and deploy software that is more secure, trustworthy, and delivered with greater speed and confidence.</p>
+        
+        <div class="card mb-6">
+            <h3 class="text-xl font-bold text-slate-800 mb-4">Security Coverage by Tool</h3>
+            <p class="text-slate-600 mb-6">This chart visualizes how the different tools in the pipeline provide comprehensive coverage against various types of vulnerabilities. Each tool plays a unique and complementary role.</p>
+            <div class="chart-container">
+                <canvas id="toolsChart"></canvas>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h3 class="text-xl font-bold text-slate-800 mb-4">Tool Summary and Key Benefits</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-100">
+                            <th class="p-3 font-semibold text-sm text-slate-700 border-b border-slate-200">Security Tool</th>
+                            <th class="p-3 font-semibold text-sm text-slate-700 border-b border-slate-200">Type of Analysis</th>
+                            <th class="p-3 font-semibold text-sm text-slate-700 border-b border-slate-200">Key Benefit</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200">
+                        <tr>
+                            <td class="p-3 text-slate-800 font-medium">Snyk SAST</td>
+                            <td class="p-3 text-slate-600">Static (SAST)</td>
+                            <td class="p-3 text-slate-600">Identifies vulnerabilities in your own code early.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 text-slate-800 font-medium">Snyk SCA</td>
+                            <td class="p-3 text-slate-600">Composition (SCA)</td>
+                            <td class="p-3 text-slate-600">Detects issues in third-party libraries.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 text-slate-800 font-medium">Snyk Container</td>
+                            <td class="p-3 text-slate-600">Container Image Scan</td>
+                            <td class="p-3 text-slate-600">Finds vulnerabilities in container OS and layers.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 text-slate-800 font-medium">Sigstore Cosign</td>
+                            <td class="p-3 text-slate-600">Cryptographic Signing</td>
+                            <td class="p-3 text-slate-600">Ensures software supply chain integrity and provenance.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 text-slate-800 font-medium">OWASP ZAP</td>
+                            <td class="p-3 text-slate-600">Dynamic (DAST)</td>
+                            <td class="p-3 text-slate-600">Uncovers runtime vulnerabilities and misconfigurations.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </main>
+
+    <footer class="bg-white shadow-sm py-6 mt-8">
+        <div class="container mx-auto px-4 text-center text-slate-600 text-sm">
+            &copy; 2025 Cyber Info. All rights reserved.
+            <p class="mt-2">Built with ❤️ and Tailwind CSS on GitHub Pages.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Common JS for navigation highlighting
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentPathname = window.location.pathname.split('/').pop();
+            const navLinks = document.querySelectorAll('.header-nav-link');
+            navLinks.forEach(link => {
+                let linkHref = link.getAttribute('href').split('/').pop();
+                // Handle index.html being both '' and 'index.html'
+                if (currentPathname === '' && linkHref === 'index.html') {
+                    link.classList.add('active');
+                } else if (linkHref === currentPathname) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Specific JS for DevSecOps article (from previous version)
+            const copyButtons = document.querySelectorAll('.copy-button');
+            copyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const code = this.nextElementSibling.textContent;
+                    const textarea = document.createElement('textarea');
+                    textarea.value = code;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    
+                    this.textContent = 'Copied!';
+                    setTimeout(() => {
+                        this.textContent = 'Copy';
+                    }, 2000);
+                });
+            });
+
+            const ctx = document.getElementById('toolsChart');
+            if(ctx) {
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Custom Code Flaws', 'Open Source Deps', 'Container OS', 'Runtime/Config', 'Supply Chain'],
+                        datasets: [{
+                            label: 'Security Coverage',
+                            data: [1, 1, 1, 1, 1],
+                            backgroundColor: [
+                                'rgba(59, 130, 246, 0.6)', // Snyk SAST
+                                'rgba(16, 185, 129, 0.6)', // Snyk SCA
+                                'rgba(239, 68, 68, 0.6)', // Snyk Container
+                                'rgba(245, 158, 11, 0.6)', // OWASP ZAP
+                                'rgba(139, 92, 246, 0.6)' // Cosign
+                            ],
+                            borderColor: [
+                                'rgba(59, 130, 246, 1)',
+                                'rgba(16, 185, 129, 1)',
+                                'rgba(239, 68, 68, 1)',
+                                'rgba(245, 158, 11, 1)',
+                                'rgba(139, 92, 246, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const labels = ['Snyk SAST', 'Snyk SCA', 'Snyk Container', 'OWASP ZAP', 'Sigstore Cosign'];
+                                        return labels[context.dataIndex] + ': Covers this area.';
+                                    }
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Comprehensive Vulnerability Coverage by Tool',
+                                font: {
+                                    size: 16
+                                },
+                                padding: {
+                                    top: 10,
+                                    bottom: 20
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    display: false
+                                },
+                                 grid: {
+                                    display: false
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

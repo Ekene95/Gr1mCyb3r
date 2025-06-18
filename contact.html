@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Me - Cyber Info</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Common Style Overrides for Consistency -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #334155; /* Slate 700 for main text */
+            background-color: #f8fafc; /* Slate 50 for background */
+        }
+        .header-nav-link {
+            transition: all 0.2s ease-in-out;
+        }
+        .header-nav-link:hover {
+            color: #0ea5e9; /* Sky 500 */
+        }
+        .header-nav-link.active {
+            font-weight: 600; /* Semi-bold */
+            color: #0284c7; /* Sky 700 */
+            border-bottom: 2px solid #0284c7;
+        }
+        .section-title {
+            color: #1e293b; /* Slate 800 */
+            margin-bottom: 1.5rem;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+            border: 1px solid #e2e8f0; /* border-slate-200 */
+            padding: 1.5rem;
+            transition: transform 0.2s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header - REPEAT THIS ON ALL PAGES -->
+    <header class="bg-white shadow-sm py-4">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-slate-900 hover:text-sky-700 transition duration-200">Cyber Info</a>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="index.html" class="header-nav-link text-lg text-slate-700 pb-1">Home</a></li>
+                    <li><a href="articles.html" class="header-nav-link text-lg text-slate-700 pb-1">Articles</a></li>
+                    <li><a href="projects.html" class="header-nav-link text-lg text-slate-700 pb-1">Projects</a></li>
+                    <li><a href="about.html" class="header-nav-link text-lg text-slate-700 pb-1">About</a></li>
+                    <li><a href="contact.html" class="header-nav-link text-lg text-slate-700 pb-1">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area for Contact Page -->
+    <main class="flex-grow container mx-auto px-4 py-8 max-w-xl bg-white rounded-xl shadow-md my-8 border border-slate-200 text-center">
+        <h1 class="text-4xl font-bold section-title">Get in Touch</h1>
+        <p class="text-lg text-slate-600 mb-6">
+            I'm always open to discussing new projects, collaborations, or opportunities. Feel free to reach out!
+        </p>
+        <div class="space-y-4 text-left inline-block">
+            <p class="text-lg text-slate-700">
+                <span class="font-semibold">Email:</span> <a href="mailto:your.email@example.com" class="text-sky-600 hover:underline">your.email@example.com</a>
+            </p>
+            <p class="text-lg text-slate-700">
+                <span class="font-semibold">LinkedIn:</span> <a href="https://linkedin.com/in/your-linkedin-profile" target="_blank" rel="noopener noreferrer" class="text-sky-600 hover:underline">linkedin.com/in/your-linkedin-profile <span style="font-size:0.8em;">↗</span></a>
+            </p>
+            <p class="text-lg text-slate-700">
+                <span class="font-semibold">GitHub:</span> <a href="https://github.com/your-github-username" target="_blank" rel="noopener noreferrer" class="text-sky-600 hover:underline">github.com/your-github-username <span style="font-size:0.8em;">↗</span></a>
+            </p>
+            <!-- You can add a simple contact form here later if needed -->
+        </div>
+    </main>
+
+    <!-- Footer - REPEAT THIS ON ALL PAGES -->
+    <footer class="bg-white shadow-sm py-6 mt-8">
+        <div class="container mx-auto px-4 text-center text-slate-600 text-sm">
+            &copy; 2025 Cyber Info. All rights reserved.
+            <p class="mt-2">Built with ❤️ and Tailwind CSS on GitHub Pages.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Common JS for navigation highlighting
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentPathname = window.location.pathname.split('/').pop();
+            const navLinks = document.querySelectorAll('.header-nav-link');
+            navLinks.forEach(link => {
+                let linkHref = link.getAttribute('href').split('/').pop();
+                // Handle index.html being both '' and 'index.html'
+                if (currentPathname === '' && linkHref === 'index.html') {
+                    link.classList.add('active');
+                } else if (linkHref === currentPathname) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

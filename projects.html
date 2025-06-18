@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Cyber Info</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Common Style Overrides for Consistency -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #334155; /* Slate 700 for main text */
+            background-color: #f8fafc; /* Slate 50 for background */
+        }
+        .header-nav-link {
+            transition: all 0.2s ease-in-out;
+        }
+        .header-nav-link:hover {
+            color: #0ea5e9; /* Sky 500 */
+        }
+        .header-nav-link.active {
+            font-weight: 600; /* Semi-bold */
+            color: #0284c7; /* Sky 700 */
+            border-bottom: 2px solid #0284c7;
+        }
+        .section-title {
+            color: #1e293b; /* Slate 800 */
+            margin-bottom: 1.5rem;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+            border: 1px solid #e2e8f0; /* border-slate-200 */
+            padding: 1.5rem;
+            transition: transform 0.2s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header - REPEAT THIS ON ALL PAGES -->
+    <header class="bg-white shadow-sm py-4">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-slate-900 hover:text-sky-700 transition duration-200">Cyber Info</a>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="index.html" class="header-nav-link text-lg text-slate-700 pb-1">Home</a></li>
+                    <li><a href="articles.html" class="header-nav-link text-lg text-slate-700 pb-1">Articles</a></li>
+                    <li><a href="projects.html" class="header-nav-link text-lg text-slate-700 pb-1">Projects</a></li>
+                    <li><a href="about.html" class="header-nav-link text-lg text-slate-700 pb-1">About</a></li>
+                    <li><a href="contact.html" class="header-nav-link text-lg text-slate-700 pb-1">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area for Projects -->
+    <main class="flex-grow container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold section-title">All My Projects</h1>
+        <div id="projects-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Projects will be dynamically loaded here by JavaScript -->
+        </div>
+        <p class="text-center text-slate-600 mt-8">More projects coming soon!</p>
+    </main>
+
+    <!-- Footer - REPEAT THIS ON ALL PAGES -->
+    <footer class="bg-white shadow-sm py-6 mt-8">
+        <div class="container mx-auto px-4 text-center text-slate-600 text-sm">
+            &copy; 2025 Cyber Info. All rights reserved.
+            <p class="mt-2">Built with ❤️ and Tailwind CSS on GitHub Pages.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- IMPORTANT: This projectsData should match the one in index.html ---
+        const projectsData = [
+            {
+                title: "Real-time Chat Application",
+                description: "A full-stack chat application built with Node.js, WebSockets, and React.",
+                link: "projects/chat-app.html",
+                tags: ["Node.js", "WebSockets", "React"]
+            },
+            {
+                title: "Image Recognition API",
+                description: "Leveraging machine learning to build an API that classifies images.",
+                link: "projects/image-api.html",
+                tags: ["Python", "Flask", "Machine Learning"]
+            },
+            {
+                title: "Portfolio Website V1",
+                description: "The first iteration of my personal portfolio, showcasing fundamental web skills.",
+                link: "projects/portfolio-v1.html",
+                tags: ["HTML", "CSS", "JavaScript"]
+            }
+            // Add more projects here, ensuring links are correct relative to the root (e.g., projects/new-project.html)
+        ];
+
+        function loadContent(containerId, dataArray, type) {
+            const container = document.getElementById(containerId);
+            if (!container) return; // Exit if container doesn't exist on this page
+            container.innerHTML = ''; // Clear previous content
+
+            dataArray.forEach(item => { // Load ALL items for the full list page
+                let tagsHtml = '';
+                if (type === 'project' && item.tags) {
+                    tagsHtml = item.tags.map(tag => `<span class="inline-block bg-slate-200 text-slate-700 text-xs px-2 py-1 rounded-full mr-1 mb-1">${tag}</span>`).join('');
+                }
+
+                container.innerHTML += `
+                    <div class="card">
+                        <h3 class="text-xl font-semibold text-slate-800 mb-2">${item.title}</h3>
+                        <p class="text-slate-600 text-sm mb-3">${item.description}</p>
+                        ${type === 'article' ? `<p class="text-slate-500 text-xs mb-2">Published: ${item.date} | Category: ${item.category}</p>` : ''}
+                        ${type === 'project' ? `<div class="mb-3">${tagsHtml}</div>` : ''}
+                        <a href="${item.link}" class="text-sky-600 hover:underline font-medium text-sm">Read More &rarr;</a>
+                    </div>
+                `;
+            });
+        }
+
+        // Load projects on this page
+        loadContent('projects-container', projectsData, 'project');
+
+        // Common JS for navigation highlighting
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentPathname = window.location.pathname.split('/').pop();
+            const navLinks = document.querySelectorAll('.header-nav-link');
+            navLinks.forEach(link => {
+                let linkHref = link.getAttribute('href').split('/').pop();
+                // Handle index.html being both '' and 'index.html'
+                if (currentPathname === '' && linkHref === 'index.html') {
+                    link.classList.add('active');
+                } else if (linkHref === currentPathname) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
